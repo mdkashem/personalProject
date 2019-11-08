@@ -1,0 +1,105 @@
+module jdoodle;
+reg I0, I1, D1, D0;
+wire A, B, C, D;    
+decdr decoder1(I1, I0,  A, B, C, D);  
+
+andGate MyandGate(A, D1,D0, E);
+
+orGate MyorGate(B, D1,D0, F);
+
+
+xorGate MyxorGate(C, D1,D0, G);
+
+norGate MynorGate(D, D1,D0, H);
+
+assign o= E|F|G|H;
+
+
+initial 
+begin        $display ("(%b %b),  [%b %b %b %b %b %b]   --  %d", I1, I0, D1, D0,  A, B, C, D,  o,$time);         
+I1=0;
+I0=0;        D1=0; D0=0;
+#1  $display ("(%b %b),  [%b %b %b %b %b %b]   --  %d", I1, I0, D1, D0,  A, B, C, D,  o,$time); 
+I1=0;
+I0=0;        D1=0; D0=1;
+#1  $display ("(%b %b),  [%b %b %b %b %b %b]   --  %d", I1, I0, D1, D0,  A, B, C, D,  o,$time);
+I1=0;
+I0=0;        D1=1; D0=0;
+#1   $display ("(%b %b),  [%b %b %b %b %b %b]   --  %d", I1, I0, D1, D0,  A, B, C, D,  o,$time);
+I1=0;
+I0=0;        D1=1; D0=1;
+#1  $display ("(%b %b),  [%b %b %b %b %b %b]   --  %d", I1, I0, D1, D0,  A, B, C, D,  o,$time);
+
+I1=0;
+I0=1; D1=0; D0=0;        
+#1  $display ("(%b %b),  [%b %b %b %b %b %b]   --  %d", I1, I0, D1, D0,  A, B, C, D,  o,$time);
+I1=0;
+I0=1; D1=0; D0=1;        
+#1  $display ("(%b %b),  [%b %b %b %b %b %b]   --  %d", I1, I0, D1, D0,  A, B, C, D,  o,$time);
+I1=0;
+I0=1; D1=1; D0=0;        
+#1   $display ("(%b %b),  [%b %b %b %b %b %b]   --  %d", I1, I0, D1, D0,  A, B, C, D,  o,$time);
+I1=0;
+I0=1; D1=1; D0=1;        
+#1  $display ("(%b %b),  [%b %b %b %b %b %b]   --  %d", I1, I0, D1, D0,  A, B, C, D,  o,$time);
+
+I1=1;
+I0=0;       D1=0; D0=0;  
+#1  $display ("(%b %b),  [%b %b %b %b %b %b]   --  %d", I1, I0, D1, D0,  A, B, C, D,  o,$time);   
+I1=1;
+I0=0;       D1=0; D0=1;  
+#1   $display ("(%b %b),  [%b %b %b %b %b %b]   --  %d", I1, I0, D1, D0,  A, B, C, D,  o,$time);
+I1=1;
+I0=0;       D1=1; D0=0;  
+#1  $display ("(%b %b),  [%b %b %b %b %b %b]   --  %d", I1, I0, D1, D0,  A, B, C, D,  o,$time);
+I1=1;
+I0=0;       D1=1; D0=1;  
+#1   $display ("(%b %b),  [%b %b %b %b %b %b]   --  %d", I1, I0, D1, D0,  A, B, C, D,  o,$time);
+
+I1=1;
+I0=1;    D1=0; D0=0;
+#1  $display ("(%b %b),  [%b %b %b %b %b %b]   --  %d", I1, I0, D1, D0,  A, B, C, D,  o,$time);
+I1=1;
+I0=1;    D1=0; D0=1;
+#1  $display ("(%b %b),  [%b %b %b %b %b %b]   --  %d", I1, I0, D1, D0,  A, B, C, D,  o,$time);
+I1=1;
+I0=1;    D1=1; D0=0;
+#1  $display ("(%b %b),  [%b %b %b %b %b %b]   --  %d", I1, I0, D1, D0,  A, B, C, D,  o,$time);
+I1=1;
+I0=1;    D1=1; D0=1;
+#1   $display ("(%b %b),  [%b %b %b %b %b %b]   --  %d", I1, I0, D1, D0,  A, B, C, D,  o,$time);
+$finish;    
+end
+endmodule
+module decdr(i1,i0, a,b,c,d);
+input i1, i0;
+output a,b,c,d;
+assign a = (~i1 & ~i0);
+assign b = (~i1 & i0);
+assign c = (i1 & ~i0);
+assign d = (i1 & i0);
+endmodule
+
+module andGate(A, i0,i1, out);
+input A, i0, i1;
+output out;
+assign out= A&(i0&i1);
+endmodule
+
+module orGate(B, i0,i1, out);
+input B, i0, i1;
+output out;
+assign out= B&(i0|i1);
+endmodule
+
+module xorGate(C, i0,i1, out);
+input C, i0, i1;
+output out;
+assign out= C&(i0^i1);
+endmodule
+
+module norGate(D, i0,i1, out);
+input D, i0, i1;
+output out;
+assign out= D&(~i0);
+endmodule

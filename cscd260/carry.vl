@@ -1,0 +1,41 @@
+module main();    /* test bed */
+reg c_in;
+reg a, b;
+wire c_out;
+
+carry_gen  my_carry_gen(a, b, c_in, c_out);
+
+
+initial
+ begin
+ /*  $monitor(a, b, c_in, c_out); */
+  a = 1; b=0; c_in = 1;
+#2 $display("a=%b b=%d c_in=%b c_out=%b",a, b, c_in, c_out);
+
+  a = 1; b=0; c_in = 1;
+#2 $display("a=%b b=%d c_in=%b c_out=%b",a, b, c_in, c_out);
+
+  a = 1; b=1; c_in = 0;
+#2 $display("a=%b b=%d c_in=%b c_out=%b",a, b, c_in, c_out);
+
+  a = 0; b=0; c_in = 0;
+#2 $display("a=%b b=%d c_in=%b c_out=%b",a, b, c_in, c_out);
+
+ end
+
+endmodule
+
+module carry_gen (a, b, cin, cout);  /* carry generator */
+input a, b;
+input cin;
+output cout;
+
+wire w0, w1, w2;
+
+assign w0 = cin & a;
+assign w1 = cin & b;
+assign w2 = a & b;
+
+assign cout = w0 | w1 | w2;
+
+endmodule

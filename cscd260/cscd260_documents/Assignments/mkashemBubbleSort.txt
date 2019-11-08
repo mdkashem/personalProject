@@ -1,0 +1,77 @@
+     .data
+          programs: .asciiz "\n.....Bubble Sort Program........\n\n"
+          Sorted: .asciiz "\n....Sorted Array.........\n "
+          Enter: .asciiz "\n Enter an Integer \n"
+          blank:    .asciiz " "
+          array :  .word 20
+      
+       .text
+	   .globl main
+      main: 
+           li $v0, 4
+           la $a0, programs
+           syscall
+		   addi $t0, $0, 0    # i=0
+		   addi $t3, $0, 4    # t3=4
+	enterLoop:
+	      slti $t2, $t0, 20      # ? (i<20)
+		  beq $t2, $0, falseEnterLoop
+		  li $v0, 4
+		  la $a0, Enter
+		  syscall
+		  li $v0, 5
+		  syscall
+		  mul $t1, $t0, $t3    # 32 bit
+		  sw $v0, array($t1)
+		  addi $t0, $t0, 1
+		  j enterLoop
+	falseEnterLoop:
+	        addi $t0, $0, 0
+			addi $t7, $0, 4
+	for1:
+	   slti $t1, $t0, 20
+	   beq $t1, $0, falseFor1
+	   addi $t2, $t0, 1      # j= i+1
+	for2:
+	    slti $t3, $t2, 20
+		beq $t3, $0, falseFor2
+		mul $t4, $t7, $t0
+		mul $t5, $t7, $t2
+		lw $s1, array($t4)   # array [i]
+		lw $s2, array($t5)   # array [j]
+	if1:
+	   sgtu $t6, $s1, $s2
+	   beq $t6, $0, falseIf1
+	   add $t6, $s1, $0
+	   add $s1, $s2, $0
+	   add $s2, $t6, $0
+	   sw $s1, array($t4)
+	   sw $s2, array($t5)
+    falseIf1:
+          addi $t2, $t2, 1   # j++
+	      j for2
+    falseFor2:
+          addi $t0, $t0, 1 # i++
+	      j for1
+	falseFor1:
+	      li $v0, 4
+		  la $a0, Sorted
+		  syscall
+		  addi $t0, $0, 0   # i=0
+		  addi $t3, $0, 4   # t3 = 4
+	printLoop:
+	          slti $t1, $t0, 20 # ? (i<20)
+			  beq $t1, $0, falsePrintLoop
+			  mul $t2, $t0, $t3
+			  lw $a0, array($t2) #array [i]
+			  li $v0, 1
+			  syscall
+			  li $v0, 4
+			  la $a0, blank
+			  syscall
+			  addi $t0, $t0, 1
+			  j printLoop
+	falsePrintLoop:
+	             jr $ra
+
+	   
